@@ -1,0 +1,1 @@
+require('mongoose-auto-api.rest')

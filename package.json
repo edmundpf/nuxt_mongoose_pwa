@@ -1,0 +1,35 @@
+{
+  "name": "nuxt-mongoose-pwa",
+  "version": "0.0.1",
+  "description": "Nuxt starter PWA integrated with mongoose-auto-api ☕",
+  "author": "Edmund Pfeil",
+  "private": false,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate",
+    "api": "node ./modules/restApi",
+    "setup": "node ./modules/setupCli"
+  },
+  "dependencies": {
+    "@nuxtjs/pwa": "^3.0.0-beta.19",
+    "js-cookie": "^2.2.1",
+    "lodash.camelcase": "^4.3.0",
+    "lodash.omit": "^4.5.0",
+    "lodash.startcase": "^4.4.0",
+    "mongoose-auto-api.consumer": "^0.1.0",
+    "mongoose-auto-api.rest": "^0.1.2",
+    "mongoose-auto-api.validation": "0.0.4",
+    "node-sass": "^4.12.0",
+    "nuxt": "^2.0.0",
+    "sass-loader": "^8.0.0",
+    "vuex-persistedstate": "^2.5.4"
+  },
+  "devDependencies": {
+    "@nuxtjs/vuetify": "^1.0.0",
+    "coffee-loader": "^0.9.0",
+    "coffeescript": "^2.4.1",
+    "mongoose-auto-api.cli": "0.0.3"
+  }
+}
