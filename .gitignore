@@ -92,3 +92,6 @@ sw.*
 
 # App Config
 appConfig.json
+
+# Models JSON
+assets/json/models.json

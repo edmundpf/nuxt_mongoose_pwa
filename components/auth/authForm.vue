@@ -6,15 +6,11 @@
 			sm="8"
 		>
 			<h1>{{ title }}</h1>
-			<v-alert
-				dense
-				dismissible
-				class="my-4"
+			<alert
+				:message="message"
 				type="error"
-				v-model="hasError"
-			>
-				{{ errorMsg }}
-			</v-alert>
+				v-bind:show.sync="showMessage"
+			/>
 			<v-form
 				ref="form"
 				class="my-4"
@@ -45,7 +41,7 @@
 				<v-btn
 					x-large
 					block
-					v-bind:class="{ success: errorMsg.length == 0, error: errorMsg.length > 0 }"
+					v-bind:class="{ success: message.length == 0, error: message.length > 0 }"
 					:disabled="!formValid"
 					@click.stop="submitEvent()"
 				>
@@ -59,6 +55,7 @@
 
 <script lang="coffee">
 
+	import alert from '~/mixins/alert'
 	import { errorMessage } from '~/modules/apiParse'
 	validation = require('mongoose-auto-api.validation')
 
@@ -70,10 +67,11 @@
 			isSignup:
 				type: Boolean
 				default: false
+		mixins: [
+			alert
+		]
 		data: ->
 			return
-				errorMsg: ''
-				hasError: false
 				formValid: true
 				rememberMe: false
 				fieldItems:
@@ -219,7 +217,7 @@
 							messageClass: 'success'
 					)
 				else
-					this.hasError = true
-					this.errorMsg = errorMessage(res)
+					this.hasMessage = true
+					this.message = errorMessage(res)
 
 </script>

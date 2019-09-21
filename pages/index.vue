@@ -1,37 +1,23 @@
 <template>
 	<v-row justify="center">
 		<v-col class="text-center">
-			<v-alert
-				dense
-				dismissible
-				class="my-4"
+			<alert
+				:message="message"
 				:type="messageClass"
-				v-model="hasMessage"
-			>
-				{{ message }}
-			</v-alert>
-			You are authenticated.
+				v-bind:show.sync="showMessage"
+			/>
 		</v-col>
 	</v-row>
 </template>
 
 <script lang="coffee">
 
+	import alertToggle from '~/mixins/alertToggle'
+
 	export default
-		data: ->
-			message: this.$route.params.message or ''
-			hasMessage: this.$route.params.message.length > 0
-			messageClass: this.$route.params.messageClass or 'success'
-		created: ->
-			setTimeout(this.toggleMessage, 3000)
-		methods:
-
-			# Toggle Message
-
-			toggleMessage: ->
-				this.hasMessage = !this.hasMessage
-				if this.hasMessage
-					setTimeout(this.toggleMessage, 3000)
+		mixins: [
+			alertToggle
+		]
 
 </script>
 

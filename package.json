@@ -16,6 +16,7 @@
     "@nuxtjs/pwa": "^3.0.0-beta.19",
     "js-cookie": "^2.2.1",
     "lodash.camelcase": "^4.3.0",
+    "lodash.clonedeep": "^4.5.0",
     "lodash.omit": "^4.5.0",
     "lodash.startcase": "^4.4.0",
     "mongoose-auto-api.consumer": "^0.1.0",
