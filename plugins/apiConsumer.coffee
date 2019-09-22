@@ -1,5 +1,8 @@
 import Vue from 'vue'
-consumer = require('mongoose-auto-api.consumer')
-Vue.prototype.$api = new consumer()
+con = require('mongoose-auto-api.consumer')
+consumer = new con()
+
+export default ({ app }, inject) =>
+	inject('api', consumer)
 
 #::: End Program :::

@@ -83,8 +83,8 @@
 	export default
 		data: ->
 			return
-				siteTitle: this.getSiteTitle(this.$route.name)
-				showBackButton: this.hasBackButton(this.$route.name)
+				siteTitle: if this.$route.name != null then this.getSiteTitle(this.$route.name) else 'Error'
+				showBackButton: if this.$route.name != null then this.hasBackButton(this.$route.name) else true
 				showDrawer: false
 				drawerItems: [
 					{
@@ -95,7 +95,7 @@
 					{
 						title: 'Data Models',
 						icon: 'mdi-table',
-						to: '/dataModels'
+						to: '/data/dataModels'
 						auth: true
 					}
 				]

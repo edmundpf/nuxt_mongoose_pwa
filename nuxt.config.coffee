@@ -62,6 +62,7 @@ module.exports =
 	plugins: [
 		'~/plugins/apiConsumer'
 		'~/plugins/persistState'
+		'~/plugins/globalComponents'
 	]
 
 	# Vuetify

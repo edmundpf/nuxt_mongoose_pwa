@@ -1,26 +1,22 @@
 <template>
-	<v-app dark>
-		<v-row justify="center">
-			<v-col class="text-center">
+	<rowCol>
 
-				<h1 v-if="hasNotFoundError">
-					{{ notFoundError }}
-				</h1>
-				<h1 v-else>
-					{{ otherError }}
-				</h1>
+			<h1 v-if="hasNotFoundError">
+				{{ notFoundError }}
+			</h1>
+			<h1 v-else>
+				{{ otherError }}
+			</h1>
 
-				<v-btn
-					x-large
-					class="error my-4"
-					@click.stop="$router.back()"
-				>
-					Go Back
-				</v-btn>
+			<v-btn
+				x-large
+				class="error my-4"
+				@click.stop="$router.back()"
+			>
+				Go Back
+			</v-btn>
 
-			</v-col>
-		</v-row>
-	</v-app>
+	</rowCol>
 </template>
 
 <script lang="coffee">

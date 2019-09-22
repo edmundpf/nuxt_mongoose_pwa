@@ -113,5 +113,6 @@ export default ({ app, store, route, redirect }) ->
 								showSignout: true
 							)
 	catch error
+		console.log(error)
 
 #::: End Program :::
