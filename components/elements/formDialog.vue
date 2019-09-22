@@ -26,13 +26,14 @@
 							@keyup.native.enter="submitEvent()"
 						>
 							<v-text-field
-								v-for="(item, key) in headers"
+								v-for="(item, key) in headerItems"
 								:key="key"
 								:label="item.text"
 								:type="getFieldType(item)"
 								:append-icon="getFieldIcon(item)"
 								@click:append="getIconClickEvent(item)"
-								:required="item.required != null && item.required ? true : false"
+								:required="item.required != null && item.required ? '' : null"
+								:rules="item.rules"
 								v-model="item.model"
 								color="info"
 								outlined
@@ -56,12 +57,26 @@
 <script lang="coffee">
 
 	import sizes from '~/assets/json/sizes'
+	import validation from '~/mixins/validation'
 
 	export default
+
 		data: ->
-			formValid: true
-			showDialog: false
-			extraSmallWidth: sizes.extraSmall
+			headers = this.headers
+			for header in headers
+				header.rules = []
+				if header.required? and header.required
+					header.rules.push(this.requiredValidation(header.title))
+
+			return
+				formValid: true
+				showDialog: false
+				extraSmallWidth: sizes.extraSmall
+				headerItems: headers
+
+		mixins: [
+			validation
+		]
 
 		props:
 			buttonText:
@@ -98,5 +113,10 @@
 					return (item.show = !item.show)
 				else
 					return null
+
+			# Submit Event
+
+			submitEvent: () ->
+				return 0
 
 </script>

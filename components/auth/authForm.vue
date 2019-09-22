@@ -54,7 +54,7 @@
 
 	import alert from '~/mixins/alert'
 	import { errorMessage } from '~/modules/apiParse'
-	validation = require('mongoose-auto-api.validation')
+	import validation from '~/mixins/validation'
 
 	export default
 		props:
@@ -66,6 +66,7 @@
 				default: false
 		mixins: [
 			alert
+			validation
 		]
 		data: ->
 			return
@@ -93,55 +94,6 @@
 						show: false
 
 		methods:
-
-			# Validation Flow
-
-			valFlow: (val) ->
-				if val.messages.length > 0
-					return val.messages[0]
-				else
-					return true
-
-			# Validate Email
-
-			emailValidation: (text) ->
-				return this.valFlow(
-					validation.userVal(
-						text,
-						'email'
-					)
-				)
-
-			# Validate Secret Key
-
-			secretKeyValidation: (text) ->
-				return this.valFlow(
-					validation.passVal(
-						text,
-						'secret key'
-					)
-				)
-
-			# Validate Password
-
-			passwordValidation: (text) ->
-				return this.valFlow(
-					validation.passVal(
-						text,
-						'password'
-					)
-				)
-
-			# Validate Password Confirmation
-
-			confirmPasswordValidation: (text) ->
-				return this.valFlow(
-					validation.confirmPassVal(
-						text,
-						this.fieldItems.password.model,
-						'password confirmation'
-					)
-				)
 
 			# Show Auth Field
 
