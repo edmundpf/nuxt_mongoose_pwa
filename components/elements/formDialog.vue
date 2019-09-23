@@ -19,30 +19,54 @@
 			</v-card-title>
 			<v-card-text>
 				<v-container>
-					<rowCol>
 						<v-form
 							ref="form"
+							:key="formKey"
 							:lazy-validation="false"
 							v-model="formValid"
 							@keyup.native.enter="saveEvent()"
 						>
-							<v-text-field
+							<template
 								v-for="(item, key) in fields"
 								v-if="!isHiddenField(item)"
-								:key="key"
-								:label="item.text"
-								:type="getFieldType(item)"
-								:append-icon="getFieldIcon(item)"
-								:prepend-inner-icon="getRequiredIcon(item)"
-								@click:append="getIconClickEvent(item)"
-								:required="item.required != null && item.required ? '' : null"
-								:rules="item.rules"
-								v-model="item.model"
-								color="info"
-								outlined
-							/>
+							>
+								<v-row justify="center">
+									<v-col
+										class="pa-0"
+										:cols="item.list ? 7 : 12"
+										:sm="item.list ? 9 : 12"
+									>
+										<v-text-field
+											:key="key"
+											:label="item.text"
+											:type="getFieldType(item)"
+											:append-icon="getFieldIcon(item)"
+											:prepend-inner-icon="getRequiredIcon(item)"
+											@click:append="getIconClickEvent(item)"
+											:required="item.required != null && item.required ? '' : null"
+											:rules="item.rules"
+											v-model="item.model"
+											color="info"
+											class="mr-0"
+											outlined
+										/>
+									</v-col>
+									<v-col
+										class="pa-0"
+										v-if="item.list"
+									>
+										<v-select
+											:key="key"
+											:items="listMethods"
+											:value="item.listMethod"
+											color="info"
+											item-color="accent"
+											outlined
+										/>
+									</v-col>
+								</v-row>
+							</template>
 						</v-form>
-					</rowCol>
 					<span>
 						<v-icon
 							small
@@ -88,11 +112,17 @@
 		data: ->
 			defaultTitle = 'Create a Record'
 			return
+				formKey: 0
 				formValid: true
 				showDialog: false
 				defaultTitle: defaultTitle
 				dialogTitleText: this.dialogTitle || defaultTitle
 				extraSmallWidth: sizes.extraSmall
+				listMethods: [
+					'Set'
+					'Push'
+					'Unique'
+				]
 
 		props:
 			buttonText:
@@ -164,7 +194,7 @@
 			createEvent: () ->
 				this.dialogTitleText = this.defaultTitle
 				try
-					this.$refs.form.reset()
+					this.formKey += 1
 				catch error
 				this.$emit('createClick')
 

@@ -63,6 +63,7 @@
 <script lang="coffee">
 
 	import appConfig from '~/appConfig.json'
+	import alertToggle from '~/mixins/alertToggle'
 	import models from '~/assets/json/models.json'
 	import { titleCase, getDateAndTime } from '~/modules/miscUtils'
 	import formDialog from '~/components/elements/formDialog'
@@ -104,6 +105,9 @@
 						header.required = false
 					if models[model].encryptFields.includes(key)
 						header.show = false
+					if models[model].listFields.includes(key)
+						header.list = true
+						header.listMethod = 'Set'
 					headers.push(header)
 			for field in extraFields
 				headers.push(field)
