@@ -57,7 +57,7 @@
 			# Required Validation
 
 			requiredValidation: (field) ->
-				val = (text, field=field) ->
+				val = (text) ->
 					return this.valFlow(
 						validation.requiredVal(
 							text,

@@ -3,6 +3,7 @@
 
 		<h1>{{ title }}</h1>
 		<alert
+			class="my-2"
 			:message="message"
 			type="error"
 			v-bind:show.sync="showMessage"

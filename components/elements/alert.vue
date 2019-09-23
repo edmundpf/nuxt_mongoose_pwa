@@ -1,7 +1,6 @@
 <template>
 	<v-alert
 		dense
-		class="my-4"
 		dismissible
 		:type="type"
 		v-model="showMessage"
@@ -26,6 +25,7 @@
 			show:
 				type: Boolean
 				default: false
+
 		watch:
 			show: (value) ->
 				this.showMessage = value

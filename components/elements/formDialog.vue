@@ -8,13 +8,14 @@
 			<v-btn
 				color="secondary"
 				v-on="on"
+				@click.stop="createEvent()"
 			>
 				{{ buttonText }}
 			</v-btn>
 		</template>
 		<v-card>
 			<v-card-title>
-				<span class="headline">{{ dialogTitle }}</span>
+				<span class="headline">{{ dialogTitleText }}</span>
 			</v-card-title>
 			<v-card-text>
 				<v-container>
@@ -23,14 +24,16 @@
 							ref="form"
 							:lazy-validation="false"
 							v-model="formValid"
-							@keyup.native.enter="submitEvent()"
+							@keyup.native.enter="saveEvent()"
 						>
 							<v-text-field
-								v-for="(item, key) in headerItems"
+								v-for="(item, key) in fields"
+								v-if="!isHiddenField(item)"
 								:key="key"
 								:label="item.text"
 								:type="getFieldType(item)"
 								:append-icon="getFieldIcon(item)"
+								:prepend-inner-icon="getRequiredIcon(item)"
 								@click:append="getIconClickEvent(item)"
 								:required="item.required != null && item.required ? '' : null"
 								:rules="item.rules"
@@ -40,13 +43,35 @@
 							/>
 						</v-form>
 					</rowCol>
+					<span>
+						<v-icon
+							small
+							color="accent"
+						>
+							mdi-alert-decagram
+						</v-icon>
+						<small>Required field</small>
+					</span>
 				</v-container>
 			</v-card-text>
 			<v-card-actions>
 				<div class="flex-grow-1"></div>
-				<v-btn @click="showDialog = false">Save</v-btn>
-				<v-btn @click="showDialog = false">Close</v-btn>
+				<v-btn
+					class="mb-2"
+					color="success"
+					@click="saveEvent()"
+				>
+					Save
+				</v-btn>
+				<v-btn
+					class="mr-2 mb-2"
+					color="warning"
+					@click="closeEvent()"
+				>
+					Close
+				</v-btn>
 			</v-card-actions>
+
 		</v-card>
 	</v-dialog>
 </template>
@@ -57,26 +82,17 @@
 <script lang="coffee">
 
 	import sizes from '~/assets/json/sizes'
-	import validation from '~/mixins/validation'
 
 	export default
 
 		data: ->
-			headers = this.headers
-			for header in headers
-				header.rules = []
-				if header.required? and header.required
-					header.rules.push(this.requiredValidation(header.title))
-
+			defaultTitle = 'Create a Record'
 			return
 				formValid: true
 				showDialog: false
+				defaultTitle: defaultTitle
+				dialogTitleText: this.dialogTitle || defaultTitle
 				extraSmallWidth: sizes.extraSmall
-				headerItems: headers
-
-		mixins: [
-			validation
-		]
 
 		props:
 			buttonText:
@@ -85,16 +101,25 @@
 			dialogTitle:
 				type: String
 				default: ''
-			headers:
+			fields:
 				type: Array
 				default: []
 
 		methods:
+
 			# Get Field Icon
 
 			getFieldIcon: (item) ->
 				if item.show?
 					return (if item.show then 'mdi-eye' else 'mdi-eye-off')
+				else
+					return null
+
+			# Get Required Icon
+
+			getRequiredIcon: (item) ->
+				if item.required != null && item.required
+					return 'mdi-alert-decagram'
 				else
 					return null
 
@@ -114,9 +139,34 @@
 				else
 					return null
 
-			# Submit Event
+			# Hidden Field
 
-			submitEvent: () ->
-				return 0
+			isHiddenField: (item) ->
+				hiddenFields = [
+					'action'
+					'createdAt'
+					'updatedAt'
+				]
+				return hiddenFields.includes(item.value)
+
+			# Save Event
+
+			saveEvent: () ->
+				this.showDialog = false
+
+			# Close Event
+
+			closeEvent: () ->
+				this.showDialog = false
+
+			# Create Event
+
+			createEvent: () ->
+				this.dialogTitleText = this.defaultTitle
+				try
+					this.$refs.form.reset()
+				catch error
+				this.$emit('createClick')
+
 
 </script>

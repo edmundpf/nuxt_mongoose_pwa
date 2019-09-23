@@ -87,7 +87,7 @@ export default ({ app, store, route, redirect }) ->
 				if app.$api.setAuthToken(store.state.auth.accessToken)
 					res = await verifyAccessToken.bind(app)()
 					if !res.status
-						return setLoggedOutState(store, redirect)
+						return setLoggedOut(store, redirect)
 
 					else if res.status and res.refreshToken?
 
@@ -112,6 +112,7 @@ export default ({ app, store, route, redirect }) ->
 								'nav/setState',
 								showSignout: true
 							)
+
 	catch error
 		console.log(error)
 
