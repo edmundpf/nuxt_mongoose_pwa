@@ -19,54 +19,59 @@
 			</v-card-title>
 			<v-card-text>
 				<v-container>
-						<v-form
-							ref="form"
-							:key="formKey"
-							:lazy-validation="false"
-							v-model="formValid"
-							@keyup.native.enter="saveEvent()"
+					<alert
+						:message="message"
+						type="error"
+						v-bind:show.sync="showMessage"
+					/>
+					<v-form
+						ref="form"
+						:key="formKey"
+						:lazy-validation="false"
+						v-model="formValid"
+						@keyup.native.enter="saveEvent()"
+					>
+						<template
+							v-for="(item, key) in fields"
+							v-if="!isHiddenField(item)"
 						>
-							<template
-								v-for="(item, key) in fields"
-								v-if="!isHiddenField(item)"
-							>
-								<v-row justify="center">
-									<v-col
-										class="pa-0"
-										:cols="item.list ? 7 : 12"
-										:sm="item.list ? 9 : 12"
-									>
-										<v-text-field
-											:key="key"
-											:label="item.text"
-											:type="getFieldType(item)"
-											:append-icon="getFieldIcon(item)"
-											:prepend-inner-icon="getRequiredIcon(item)"
-											@click:append="getIconClickEvent(item)"
-											:required="item.required != null && item.required ? '' : null"
-											:rules="item.rules"
-											v-model="item.model"
-											color="info"
-											class="mr-0"
-											outlined
-										/>
-									</v-col>
-									<v-col
-										class="pa-0"
-										v-if="item.list"
-									>
-										<v-select
-											:key="key"
-											:items="listMethods"
-											:value="item.listMethod"
-											color="info"
-											item-color="accent"
-											outlined
-										/>
-									</v-col>
-								</v-row>
-							</template>
-						</v-form>
+							<v-row justify="center">
+								<v-col
+									class="pa-0"
+									:cols="item.list ? 7 : 12"
+									:sm="item.list ? 9 : 12"
+								>
+									<v-text-field
+										:key="key"
+										:label="item.text"
+										:type="getFieldType(item)"
+										:append-icon="getFieldIcon(item)"
+										:prepend-inner-icon="getRequiredIcon(item)"
+										@click:append="getIconClickEvent(item)"
+										:required="item.required != null && item.required ? '' : null"
+										:rules="item.rules"
+										v-model="item.model"
+										color="info"
+										class="mr-0"
+										outlined
+									/>
+							</v-col>
+								<v-col
+									class="pa-0"
+									v-if="item.list"
+								>
+									<v-select
+										:key="key"
+										:items="listMethods"
+										:value="item.listMethod"
+										color="info"
+										item-color="accent"
+										outlined
+									/>
+								</v-col>
+							</v-row>
+						</template>
+					</v-form>
 					<span>
 						<v-icon
 							small
@@ -84,6 +89,7 @@
 					class="mb-2"
 					color="success"
 					@click="saveEvent()"
+					:disabled="!formValid"
 				>
 					Save
 				</v-btn>
@@ -106,6 +112,8 @@
 <script lang="coffee">
 
 	import sizes from '~/assets/json/sizes'
+	import alert from '~/mixins/alert'
+	import { errorMessage } from '~/modules/apiParse'
 
 	export default
 
@@ -113,6 +121,8 @@
 			defaultTitle = 'Create a Record'
 			return
 				formKey: 0
+				primaryValue: ''
+				mode: 'create'
 				formValid: true
 				showDialog: false
 				defaultTitle: defaultTitle
@@ -134,6 +144,16 @@
 			fields:
 				type: Array
 				default: []
+			collection:
+				type: String
+				default: ''
+			primaryKey:
+				type: String
+				default: ''
+
+		mixins: [
+			alert
+		]
 
 		methods:
 
@@ -182,7 +202,10 @@
 			# Save Event
 
 			saveEvent: () ->
-				this.showDialog = false
+				if this.mode == 'create'
+					this.createSave()
+				else if this.mode == 'update'
+					this.updateSave()
 
 			# Close Event
 
@@ -193,10 +216,49 @@
 
 			createEvent: () ->
 				this.dialogTitleText = this.defaultTitle
+				this.mode = 'create'
 				try
 					this.formKey += 1
 				catch error
 				this.$emit('createClick')
 
+			# Create Save
+
+			createSave: () ->
+				updateDict = {}
+				for field in this.fields
+					updateDict[field.value] = field.model
+
+				res = await this.$api.insert(
+					this.collection,
+					updateDict
+				)
+				if res.status == 'ok'
+					this.$emit('createSave')
+					this.showDialog = false
+				else
+					this.showMessage = true
+					this.message = errorMessage(res)
+
+			# Update Save
+
+			updateSave: () ->
+				updateDict = [this.primaryKey]: this.primaryValue
+				for field in this.fields
+					if field.value == this.primaryKey
+						updateDict.update_primary = field.model
+					else
+						updateDict[field.value] = field.model
+
+				res = await this.$api.update(
+					this.collection,
+					updateDict
+				)
+				if res.status == 'ok'
+					this.$emit('updateSave')
+					this.showDialog = false
+				else
+					this.showMessage = true
+					this.message = errorMessage(res)
 
 </script>

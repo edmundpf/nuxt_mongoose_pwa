@@ -10,6 +10,11 @@
 			</v-card-title>
 			<v-card-text>
 				<v-container>
+					<alert
+						:message="message"
+						type="error"
+						v-bind:show.sync="showMessage"
+					/>
 					<rowCol :textCenter="false">
 						<strong
 							class="white--text"
@@ -50,6 +55,7 @@
 <script lang="coffee">
 
 	import sizes from '~/assets/json/sizes'
+	import alert from '~/mixins/alert'
 
 	export default
 
@@ -62,6 +68,9 @@
 				dialogTitleText: this.dialogTitle || defaultTitle
 				extraSmallWidth: sizes.extraSmall
 
+		mixins: [
+			alert
+		]
 
 		computed:
 			recordText: () ->
@@ -74,6 +83,12 @@
 			record:
 				type: Object
 				default: {}
+			collection:
+				type: String
+				default: ''
+			primaryKey:
+				type: String
+				default: ''
 
 		methods:
 
@@ -90,7 +105,17 @@
 			# Delete Event
 
 			deleteEvent: () ->
-				this.showDialog = false
+				updateDict = [this.primaryKey]: this.record[this.primaryKey]
+				res = await this.$api.remove(
+					this.collection,
+					updateDict
+				)
+				if res.status == 'ok'
+					this.$emit('deleteSave')
+					this.showDialog = false
+				else
+					this.showMessage = true
+					this.message = errorMessage(res)
 
 			# Close Event
 
