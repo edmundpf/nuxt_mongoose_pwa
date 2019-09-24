@@ -2,8 +2,8 @@
 	<v-row :justify="center ? 'center' : null">
 		<v-col
 			:class="textCenter ? 'text-center' : null"
-			:md="condense ? 6 : null"
 			:sm="condense ? 8 : null"
+			:md="condense ? 6 : null"
 		>
 			<slot />
 		</v-col>

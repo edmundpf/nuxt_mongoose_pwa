@@ -92,15 +92,12 @@
 
 		methods:
 
-			# Hidden Field
+			# Message and Dialog Reset
 
-			isHiddenField: (item) ->
-				hiddenFields = [
-					'action'
-					'createdAt'
-					'updatedAt'
-				]
-				return hiddenFields.includes(item.value)
+			messageAndDialogReset: ->
+					this.showDialog = false
+					this.showMessage = false
+					this.message = ''
 
 			# Delete Event
 
@@ -112,7 +109,7 @@
 				)
 				if res.status == 'ok'
 					this.$emit('deleteSave')
-					this.showDialog = false
+					this.messageAndDialogReset()
 				else
 					this.showMessage = true
 					this.message = errorMessage(res)
@@ -120,6 +117,6 @@
 			# Close Event
 
 			closeEvent: () ->
-				this.showDialog = false
+				this.messageAndDialogReset()
 
 </script>

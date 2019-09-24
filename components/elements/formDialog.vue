@@ -38,10 +38,11 @@
 							<v-row justify="center">
 								<v-col
 									class="pa-0"
-									:cols="item.list ? 7 : 12"
-									:sm="item.list ? 9 : 12"
+									:cols="mode != 'create' && item.list ? 7 : 12"
+									:sm="mode != 'create' && item.list ? 9 : 12"
 								>
 									<v-text-field
+										v-if="!item.date"
 										:key="key"
 										:label="item.text"
 										:type="getFieldType(item)"
@@ -55,15 +56,30 @@
 										class="mr-0"
 										outlined
 									/>
-							</v-col>
+									<v-datetime-picker
+										v-else
+										:key="key"
+										:label="item.text"
+										v-model="item.model"
+										:text-field-props="{
+											appendIcon: 'mdi-calendar-clock',
+											prependInnerIcon: getRequiredIcon(item),
+											required: item.required != null && item.required ? '' : null,
+											rules: item.rules,
+											color: 'info',
+											outlined: '',
+										}"
+										:time-picker-props="{ ampmInTitle: true }"
+									/>
+								</v-col>
 								<v-col
 									class="pa-0"
-									v-if="item.list"
+									v-if="mode != 'create' && item.list"
 								>
 									<v-select
 										:key="key"
-										:items="listMethods"
-										:value="item.listMethod"
+										:items="Object.keys(listMethods)"
+										v-model="item.listMethod"
 										color="info"
 										item-color="accent"
 										outlined
@@ -128,11 +144,10 @@
 				defaultTitle: defaultTitle
 				dialogTitleText: this.dialogTitle || defaultTitle
 				extraSmallWidth: sizes.extraSmall
-				listMethods: [
-					'Set'
-					'Push'
-					'Unique'
-				]
+				listMethods:
+					Set: this.$api.updateSet
+					Push: this.$api.updatePush
+					Unique: this.$api.updatePushUnique
 
 		props:
 			buttonText:
@@ -150,6 +165,9 @@
 			primaryKey:
 				type: String
 				default: ''
+			schema:
+				type: Array
+				default: []
 
 		mixins: [
 			alert
@@ -199,18 +217,25 @@
 				]
 				return hiddenFields.includes(item.value)
 
+			# Message and Dialog Reset
+
+			messageAndDialogReset: ->
+					this.showDialog = false
+					this.showMessage = false
+					this.message = ''
+
 			# Save Event
 
 			saveEvent: () ->
 				if this.mode == 'create'
-					this.createSave()
+					await this.createSave()
 				else if this.mode == 'update'
-					this.updateSave()
+					await this.updateSave()
 
 			# Close Event
 
 			closeEvent: () ->
-				this.showDialog = false
+				this.messageAndDialogReset()
 
 			# Create Event
 
@@ -227,7 +252,8 @@
 			createSave: () ->
 				updateDict = {}
 				for field in this.fields
-					updateDict[field.value] = field.model
+					if this.schema.includes(field.value)
+						updateDict[field.value] = field.model
 
 				res = await this.$api.insert(
 					this.collection,
@@ -235,7 +261,7 @@
 				)
 				if res.status == 'ok'
 					this.$emit('createSave')
-					this.showDialog = false
+					this.messageAndDialogReset()
 				else
 					this.showMessage = true
 					this.message = errorMessage(res)
@@ -244,20 +270,61 @@
 
 			updateSave: () ->
 				updateDict = [this.primaryKey]: this.primaryValue
+				listUpdates = {}
 				for field in this.fields
-					if field.value == this.primaryKey
-						updateDict.update_primary = field.model
-					else
-						updateDict[field.value] = field.model
+					if this.schema.includes(field.value)
+						if field.value == this.primaryKey
+							updateDict.update_primary = field.model
+						else
+							if !field.list? or !field.list
+								updateDict[field.value] = field.model
+							else
+								if field.model.trim() == ''
+									updateVal = []
+								else
+									updateVal = field.model.split(',')
+								listUpdates[field.value] =
+									value: updateVal
+									method: field.listMethod
 
 				res = await this.$api.update(
 					this.collection,
 					updateDict
 				)
-				if res.status == 'ok'
+
+				errors = []
+				hasErrors = false
+				for key, val of listUpdates
+					listRes = await this.listMethods[val.method].bind(this)(
+						this.collection,
+						[this.primaryKey]: updateDict.update_primary
+						[key]: val.value
+					)
+					if listRes.status != 'ok'
+						hasErrors = true
+						if listRes.response.messages?
+							errors = [
+								...errors,
+								...listRes.response.messages
+							]
+						else if listRes.response.message?
+							errors.push(listRes.response.message)
+
+				if res.status == 'ok' && !hasErrors
 					this.$emit('updateSave')
-					this.showDialog = false
+					this.messageAndDialogReset()
 				else
+					if res.response.message?
+						res.response.messages = [
+							res.response.message,
+							...errors
+						]
+						delete res.response.message
+					else if res.response.messages?
+						res.response.messages = [
+							...res.response.messages,
+							...errors,
+						]
 					this.showMessage = true
 					this.message = errorMessage(res)
 

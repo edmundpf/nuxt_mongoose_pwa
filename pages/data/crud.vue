@@ -27,6 +27,7 @@
 							:collection="collection"
 							:primaryKey="primaryKey"
 							:fields="headers"
+							:schema="schema"
 							@createClick="createItem()"
 							@createSave="createSave()"
 							@updateSave="updateSave()"
@@ -122,12 +123,15 @@
 					if models[model].listFields.includes(key)
 						header.list = true
 						header.listMethod = 'Set'
+					if models[model].dateFields.includes(key)
+						header.date = true
 					headers.push(header)
 			for field in extraFields
 				headers.push(field)
 
 			return
 				model: model
+				schema: Object.keys(models[model].schema)
 				collection: models[model].collectionName
 				title: titleCase(model)
 				headers: headers
@@ -151,16 +155,35 @@
 				data = await this.$api.getAll(this.collection)
 				if data.status == 'ok'
 					this.items = cloneDeep(data.response)
+					this.itemsUpdate = cloneDeep(data.response)
 					for record in data.response
 						for key, val of record
+
+							# List Fields
+
 							if models[this.model].listFields.includes(key)
 								record[key] = val.join(',')
-							if !['createdAt', 'updatedAt'].includes(key)
-								if val.length >= 31
-									record[key] = "#{val.substring(0, 28)}..."
-							else
+								this.itemsUpdate[data.response.indexOf(record)][key] = val.join(',')
+
+							# Boolean Fields
+
+							if models[this.model].booleanFields.includes(key)
+								record[key] = String(val)
+								this.itemsUpdate[data.response.indexOf(record)][key] = String(val)
+
+							# Date Fields
+
+							if [...models[this.model].dateFields, 'createdAt', 'updatedAt'].includes(key)
 								dateTime = getDateAndTime(val)
+								milDateTime = getDateAndTime(val, true)
 								record[key] = "#{dateTime.date} #{dateTime.time}"
+								this.itemsUpdate[data.response.indexOf(record)][key] = "#{milDateTime.date} #{milDateTime.time}"
+
+							# Ellipsis
+
+							else if val.length >= 31
+								record[key] = "#{val.substring(0, 28)}..."
+
 					this.itemsDisplay = data.response
 
 			# Create Item
@@ -172,7 +195,7 @@
 			# View Item
 
 			viewItem: (item) ->
-				this.itemsDisplay.indexOf(item)
+				this.currentIndex = this.itemsDisplay.indexOf(item)
 				this.currentRecord = this.items[this.currentIndex]
 				this.$refs.infoDialog.dialogTitleText = "Record ##{this.currentIndex + 1}"
 				this.$refs.infoDialog.showDelete = false
@@ -183,7 +206,7 @@
 			editItem: (item) ->
 				this.getItemModels(item)
 				this.$refs.updateDialog.dialogTitleText = "Update Record ##{this.currentIndex + 1}"
-				this.$refs.updateDialog.mode = 'edit'
+				this.$refs.updateDialog.mode = 'update'
 				this.$refs.updateDialog.primaryValue = item[this.primaryKey]
 				this.$refs.updateDialog.showDialog = true
 
@@ -208,10 +231,12 @@
 
 			getItemModels: (item) ->
 				this.currentIndex = this.itemsDisplay.indexOf(item)
-				for key, val of this.items[this.currentIndex]
+				for key, val of this.itemsUpdate[this.currentIndex]
 					for header in this.headers
 						if key == header.value
 							header.model = val
+						if header.listMethod?
+							header.listMethod = 'Set'
 
 			# Create Save
 

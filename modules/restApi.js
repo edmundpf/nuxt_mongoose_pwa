@@ -7,6 +7,18 @@ const cloneDeep = require('lodash.clonedeep')
 models = cloneDeep(api.models)
 
 for (const model in models) {
+	models[model].booleanFields = []
+	models[model].dateFields = []
+	for (const path in models[model].model.schema.paths) {
+		if (models[model].model.schema.paths[path].instance == 'Boolean') {
+			models[model].booleanFields.push(path)
+		}
+		else if (models[model].model.schema.paths[path].instance == 'Date') {
+			if (!['updatedAt', 'createdAt'].includes(path)) {
+				models[model].dateFields.push(path)
+			}
+		}
+	}
 	delete models[model].model
 }
 
