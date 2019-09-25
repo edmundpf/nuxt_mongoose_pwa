@@ -13,6 +13,7 @@
 	import alertToggle from '~/mixins/alertToggle'
 
 	export default
+
 		mixins: [
 			alertToggle
 		]

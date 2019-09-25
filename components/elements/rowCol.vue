@@ -13,6 +13,7 @@
 <script lang="coffee">
 
 	export default
+
 		props:
 			center:
 				type: Boolean

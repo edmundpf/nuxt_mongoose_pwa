@@ -47,7 +47,6 @@
 			</v-btn>
 
 		</v-form>
-
 	</rowCol>
 </template>
 
@@ -58,6 +57,7 @@
 	import validation from '~/mixins/validation'
 
 	export default
+
 		props:
 			title:
 				type: String
@@ -65,10 +65,7 @@
 			isSignup:
 				type: Boolean
 				default: false
-		mixins: [
-			alert
-			validation
-		]
+
 		data: ->
 			return
 				formValid: true
@@ -93,6 +90,11 @@
 						model: ''
 						rules: [ this.confirmPasswordValidation ]
 						show: false
+
+		mixins: [
+			alert
+			validation
+		]
 
 		methods:
 

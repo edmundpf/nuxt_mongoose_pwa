@@ -20,7 +20,7 @@
 							vertical
 						/>
 						<div class="flex-grow-1"></div>
-						<formDialog
+						<crud-update-dialog
 							ref="updateDialog"
 							buttonText="Create Item"
 							:dialogTitle="updateDialogTitle"
@@ -32,7 +32,7 @@
 							@createSave="createSave()"
 							@updateSave="updateSave()"
 						/>
-						<infoDialog
+						<crud-info-dialog
 							ref="infoDialog"
 							:dialogTitle="infoDialogTitle"
 							:collection="collection"
@@ -81,8 +81,8 @@
 	import alertToggle from '~/mixins/alertToggle'
 	import models from '~/assets/json/models.json'
 	import { titleCase, getDateAndTime } from '~/modules/miscUtils'
-	import formDialog from '~/components/elements/formDialog'
-	import infoDialog from '~/components/elements/infoDialog'
+	import crudUpdateDialog from '~/components/crud/updateDialog'
+	import crudInfoDialog from '~/components/crud/infoDialog'
 	import validation from '~/mixins/validation'
 	cloneDeep = require('lodash.clonedeep')
 
@@ -134,16 +134,26 @@
 				schema: headerKeys
 				collection: models[model].collectionName
 				title: titleCase(model)
-				headers: headers
+				primaryKey: models[model].primaryKey
 				updateDialogTitle: 'Create a Record'
 				infoDialogTitle: 'Record #1'
-				itemsPerPage: 10
-				currentRecord: {}
-				currentIndex: 1
-				primaryKey: models[model].primaryKey
+				headers: headers
 				items: []
 				itemsUpdate: []
 				itemsDisplay: []
+				currentRecord: {}
+				currentIndex: 1
+				itemsPerPage: 10
+
+		mixins: [
+			validation
+			alertToggle
+		]
+
+		components: {
+			crudUpdateDialog
+			crudInfoDialog
+		}
 
 		created: ->
 			await this.loadItems()
@@ -266,16 +276,5 @@
 				this.loadItems()
 				this.message = message
 				this.messageOn()
-
-		mixins: [
-			validation
-			alertToggle
-		]
-
-		components: {
-			formDialog
-			infoDialog
-		}
-
 
 </script>

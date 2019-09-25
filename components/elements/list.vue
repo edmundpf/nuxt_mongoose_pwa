@@ -25,10 +25,6 @@
 
 	export default
 
-		data: ->
-			return
-				backgroundColor: colors.background
-
 		props:
 			items:
 				type: Array
@@ -45,5 +41,9 @@
 			to:
 				type: String
 				default: null
+
+		data: ->
+			return
+				backgroundColor: colors.background
 
 </script>

@@ -14,6 +14,7 @@
 	import topNavbar from '~/components/nav/topNavbar'
 
 	export default
+
 		components: {
 			topNavbar
 		}

@@ -1,6 +1,5 @@
 <template>
 	<rowCol>
-
 			<h1 v-if="hasNotFoundError">
 				{{ notFoundError }}
 			</h1>
@@ -15,31 +14,34 @@
 			>
 				Go Back
 			</v-btn>
-
 	</rowCol>
 </template>
 
 <script lang="coffee">
 
 	export default
+
+		layout: 'empty'
+
+		props:
+			error:
+				type: Object
+				default: null
+
 		data: ->
 			return
 				notFoundError: '404: Not Found'
 				otherError: "#{this.error.statusCode}: #{this.error.message}"
+
 		head: ->
 			return
 				title: if this.hasNotFoundError then this.notFoundError else "#{this.error.statusCode}: Error"
+
 		computed:
 
 			# Check for 404 not found error
 
 			hasNotFoundError: ->
 				return this.error.statusCode == 404
-
-		layout: 'empty'
-		props:
-			error:
-				type: Object
-				default: null
 
 </script>

@@ -59,6 +59,22 @@
 
 	export default
 
+		name: 'crud-info-dialog'
+
+		props:
+			dialogTitle:
+				type: String
+				default: ''
+			record:
+				type: Object
+				default: {}
+			collection:
+				type: String
+				default: ''
+			primaryKey:
+				type: String
+				default: ''
+
 		data: ->
 			defaultTitle = 'Record #1'
 			return
@@ -75,20 +91,6 @@
 		computed:
 			recordText: () ->
 				return JSON.stringify(this.record, null, 2)
-
-		props:
-			dialogTitle:
-				type: String
-				default: ''
-			record:
-				type: Object
-				default: {}
-			collection:
-				type: String
-				default: ''
-			primaryKey:
-				type: String
-				default: ''
 
 		methods:
 

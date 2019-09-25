@@ -10,6 +10,7 @@
 	import authForm from '~/components/auth/authForm'
 
 	export default
+
 		components: {
 			authForm
 		}

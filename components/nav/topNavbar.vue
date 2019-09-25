@@ -1,6 +1,5 @@
 <template>
 	<div>
-
 		<v-navigation-drawer
 			app
 			fixed
@@ -72,7 +71,6 @@
 				<v-icon>mdi-dots-vertical</v-icon>
 			</v-btn>
 		</v-app-bar>
-
 	</div>
 </template>
 
@@ -81,6 +79,7 @@
 	import { titleCase } from '~/modules/miscUtils'
 
 	export default
+
 		data: ->
 			return
 				siteTitle: if this.$route.name != null then this.getSiteTitle(this.$route.name) else 'Error'
@@ -117,6 +116,11 @@
 						'icon': 'mdi-logout'
 						'action': this.signOutAction
 						'stateKey': 'showSignout'
+
+		watch:
+			'$route.name': (value) ->
+				this.siteTitle = this.getSiteTitle(value)
+				this.showBackButton = this.hasBackButton(value)
 
 		methods:
 
@@ -190,10 +194,5 @@
 					accessToken: ''
 				)
 				this.$router.push('/account/login')
-
-		watch:
-			'$route.name': (value) ->
-				this.siteTitle = this.getSiteTitle(value)
-				this.showBackButton = this.hasBackButton(value)
 
 </script>

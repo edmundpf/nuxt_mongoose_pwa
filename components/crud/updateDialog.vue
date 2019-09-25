@@ -118,7 +118,6 @@
 					Close
 				</v-btn>
 			</v-card-actions>
-
 		</v-card>
 	</v-dialog>
 </template>
@@ -134,21 +133,7 @@
 
 	export default
 
-		data: ->
-			defaultTitle = 'Create a Record'
-			return
-				formKey: 0
-				primaryValue: ''
-				mode: 'create'
-				formValid: true
-				showDialog: false
-				defaultTitle: defaultTitle
-				dialogTitleText: this.dialogTitle || defaultTitle
-				extraSmallWidth: sizes.extraSmall
-				listMethods:
-					Set: this.$api.updateSet
-					Push: this.$api.updatePush
-					Unique: this.$api.updatePushUnique
+		name: 'crud-update-dialog'
 
 		props:
 			buttonText:
@@ -169,6 +154,22 @@
 			schema:
 				type: Array
 				default: []
+
+		data: ->
+			defaultTitle = 'Create a Record'
+			return
+				defaultTitle: defaultTitle
+				dialogTitleText: this.dialogTitle || defaultTitle
+				extraSmallWidth: sizes.extraSmall
+				formValid: true
+				showDialog: false
+				mode: 'create'
+				formKey: 0
+				primaryValue: ''
+				listMethods:
+					Set: this.$api.updateSet
+					Push: this.$api.updatePush
+					Unique: this.$api.updatePushUnique
 
 		mixins: [
 			alert

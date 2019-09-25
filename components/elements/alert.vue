@@ -13,8 +13,7 @@
 <script lang="coffee">
 
 	export default
-		data: ->
-			showMessage: this.show or false
+
 		props:
 			message:
 				type: String
@@ -25,6 +24,9 @@
 			show:
 				type: Boolean
 				default: false
+
+		data: ->
+			showMessage: this.show or false
 
 		watch:
 			show: (value) ->

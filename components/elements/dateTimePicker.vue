@@ -13,7 +13,6 @@
 				readonly
 			/>
 		</template>
-
 		<v-card>
 			<v-card-text class="pa-0">
 				<v-tabs
@@ -104,13 +103,6 @@
 			prop: 'datetime'
 			event: 'input'
 
-		data: ->
-			return
-				date: DEFAULT_DATE
-				time: DEFAULT_TIME
-				display: false
-				activeTab: 0
-
 		props:
 			datetime:
 				type: [Date, String]
@@ -135,6 +127,13 @@
 				type: Object
 			timePickerProps:
 				type: Object
+
+		data: ->
+			return
+				date: DEFAULT_DATE
+				time: DEFAULT_TIME
+				display: false
+				activeTab: 0
 
 		created: ->
 			if this.datetime
