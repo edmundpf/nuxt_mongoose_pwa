@@ -11,14 +11,18 @@ module.exports = {
 			type: Number,
 			required: true,
 		},
-		sale: {
+		onSale: {
 			type: Boolean,
 			required: true,
 			default: false,
 		},
-		date: {
+		saleStart: {
 			type: Date,
 			required: true,
-		}
+		},
+		saleEnd: {
+			type: Date,
+			required: true,
+		},
 	},
 }

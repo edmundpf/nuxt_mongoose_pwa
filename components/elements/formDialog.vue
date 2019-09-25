@@ -29,6 +29,7 @@
 						:key="formKey"
 						:lazy-validation="false"
 						v-model="formValid"
+						v-on:submit.prevent
 						@keyup.native.enter="saveEvent()"
 					>
 						<template

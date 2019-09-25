@@ -14,6 +14,6 @@ module.exports = {
 		},
 		products: [{
 			type: String
-		}]
+		}],
 	},
 }

@@ -18,6 +18,12 @@ for (const model in models) {
 				models[model].dateFields.push(path)
 			}
 		}
+		if (models[model].primaryKey == '_id') {
+			models[model].schema._id = {
+				unique: true,
+				required: true,
+			}
+		}
 	}
 	delete models[model].model
 }

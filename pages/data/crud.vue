@@ -131,18 +131,19 @@
 
 			return
 				model: model
-				schema: Object.keys(models[model].schema)
+				schema: headerKeys
 				collection: models[model].collectionName
 				title: titleCase(model)
 				headers: headers
 				updateDialogTitle: 'Create a Record'
 				infoDialogTitle: 'Record #1'
 				itemsPerPage: 10
-				itemsDisplay: []
 				currentRecord: {}
 				currentIndex: 1
 				primaryKey: models[model].primaryKey
 				items: []
+				itemsUpdate: []
+				itemsDisplay: []
 
 		created: ->
 			await this.loadItems()
@@ -207,7 +208,7 @@
 				this.getItemModels(item)
 				this.$refs.updateDialog.dialogTitleText = "Update Record ##{this.currentIndex + 1}"
 				this.$refs.updateDialog.mode = 'update'
-				this.$refs.updateDialog.primaryValue = item[this.primaryKey]
+				this.$refs.updateDialog.primaryValue = this.items[this.currentIndex][this.primaryKey]
 				this.$refs.updateDialog.showDialog = true
 
 			# Copy Item
