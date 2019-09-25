@@ -122,9 +122,6 @@
 	</v-dialog>
 </template>
 
-
-</template>
-
 <script lang="coffee">
 
 	import sizes from '~/assets/json/sizes'
@@ -229,10 +226,11 @@
 			# Save Event
 
 			saveEvent: () ->
-				if this.mode == 'create'
-					await this.createSave()
-				else if this.mode == 'update'
-					await this.updateSave()
+				if this.formValid
+					if this.mode == 'create'
+						await this.createSave()
+					else if this.mode == 'update'
+						await this.updateSave()
 
 			# Close Event
 

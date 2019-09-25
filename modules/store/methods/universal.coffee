@@ -1,5 +1,3 @@
-omit = require('lodash.omit')
-
 #::: Universal Store Methods :::
 
 #: Mutations

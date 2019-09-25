@@ -20,6 +20,10 @@
 							vertical
 						/>
 						<div class="flex-grow-1"></div>
+						<crud-filter-dialog
+							:fields="headers"
+							:schema="schema"
+						/>
 						<crud-update-dialog
 							ref="updateDialog"
 							buttonText="Create Item"
@@ -83,6 +87,7 @@
 	import { titleCase, getDateAndTime } from '~/modules/miscUtils'
 	import crudUpdateDialog from '~/components/crud/updateDialog'
 	import crudInfoDialog from '~/components/crud/infoDialog'
+	import crudFilterDialog from '~/components/crud/filterDialog'
 	import validation from '~/mixins/validation'
 	cloneDeep = require('lodash.clonedeep')
 
@@ -153,6 +158,7 @@
 		components: {
 			crudUpdateDialog
 			crudInfoDialog
+			crudFilterDialog
 		}
 
 		created: ->

@@ -49,9 +49,6 @@
 	</v-dialog>
 </template>
 
-
-</template>
-
 <script lang="coffee">
 
 	import sizes from '~/assets/json/sizes'
