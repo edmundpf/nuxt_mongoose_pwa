@@ -1,11 +1,11 @@
 <template>
-	<rowCol>
+	<div>
 		<alert
 			:message="message"
 			:type="messageClass"
 			v-bind:show.sync="showMessage"
 		/>
-	</rowCol>
+	</div>
 </template>
 
 <script lang="coffee">

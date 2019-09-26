@@ -1,7 +1,7 @@
 <template>
 	<v-chip
 		label
-		close
+		:close="close ? '' : null"
 		outlined
 		class="mr-2 mb-4"
 		:color="color"
@@ -25,6 +25,9 @@
 			color:
 				type: String
 				default: 'success'
+			close:
+				type: Boolean
+				default: true
 
 		methods:
 

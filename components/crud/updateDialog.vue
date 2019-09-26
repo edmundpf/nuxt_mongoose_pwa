@@ -19,11 +19,17 @@
 			</v-card-title>
 			<v-card-text>
 				<v-container>
-					<alert
-						:message="message"
-						type="error"
-						v-bind:show.sync="showMessage"
-					/>
+
+					<v-row>
+						<v-col class="pa-0">
+							<alert
+								:message="message"
+								type="error"
+								v-bind:show.sync="showMessage"
+							/>
+						</v-col>
+					</v-row>
+
 					<v-form
 						ref="form"
 						:key="formKey"
@@ -153,7 +159,7 @@
 				default: []
 
 		data: ->
-			defaultTitle = 'Create a Record'
+			defaultTitle = 'Create an Item'
 			return
 				defaultTitle: defaultTitle
 				dialogTitleText: this.dialogTitle || defaultTitle

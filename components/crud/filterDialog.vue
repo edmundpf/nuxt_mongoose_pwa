@@ -11,7 +11,7 @@
 				class="mr-2"
 				@click.stop="filterEvent()"
 			>
-				Filter Items
+				Filter
 			</v-btn>
 		</template>
 		<v-card>
@@ -20,11 +20,17 @@
 			</v-card-title>
 			<v-card-text>
 				<v-container>
-					<alert
-						:message="message"
-						:type="messageClass"
-						v-bind:show.sync="showMessage"
-					/>
+
+					<v-row>
+						<v-col class="pa-0">
+							<alert
+								:message="message"
+								:type="messageClass"
+								v-bind:show.sync="showMessage"
+							/>
+						</v-col>
+					</v-row>
+
 					<v-form
 						ref="form"
 						:key="formKey"
@@ -70,9 +76,7 @@
 						</v-row>
 
 						<v-row justify="center">
-							<v-col
-								class="pa-0"
-							>
+							<v-col class="pa-0">
 								<v-text-field
 									v-if="!currentField.date"
 									key="value-text-field"
@@ -91,8 +95,9 @@
 									label="Value"
 									v-model="currentValue"
 									:text-field-props="{
+										appendIcon: 'mdi-calendar-clock',
 										prependInnerIcon: 'mdi-alert-decagram',
-										rules: requiredRules,
+										rules: rules,
 										color: 'info',
 										outlined: '',
 										required: '',
@@ -102,14 +107,17 @@
 							</v-col>
 						</v-row>
 
-						<rowCol>
-							<v-tag
-								v-for="(item, i) in filters"
-								:key="i"
-								:text="item.text"
-								@close="removeFilter(i)"
-							/>
-						</rowCol>
+						<v-row>
+							<v-col class="pa-0">
+								<v-tag
+									v-for="(item, i) in filters"
+									:key="i"
+									:text="item.text"
+									:color="item.color"
+									@close="removeFilter(i)"
+								/>
+							</v-col>
+						</v-row>
 
 					</v-form>
 				</v-container>
@@ -163,26 +171,42 @@
 			schema:
 				type: Array
 				default: []
+			activeFilters:
+				type: Array
+				default: []
 
 		data: ->
 
 			fieldItems = cloneDeep(this.fields)
 			for index of fieldItems
+				if ['createdAt', 'updatedAt'].includes(fieldItems[index].value)
+					fieldItems[index].date = true
 				if fieldItems[index].value == 'action'
 					fieldItems.splice(index, 1)
+
 			return
-				dialogTitleText: 'Filter Records'
+				dialogTitleText: 'Filter Items'
 				extraSmallWidth: sizes.extraSmall
 				formValid: true
 				showDialog: false
 				formKey: 0
+				currentColor: 0
 				currentValue: ''
 				currentField: fieldItems[0]
 				currentOperator: operators[0]
-				filters: []
 				fieldItems: fieldItems
 				operatorItems: operators
+				filters: []
 				rules: [ this.requiredValidation('value') ]
+				colors: [
+					'info'
+					'success'
+					'warning'
+					'accent'
+					'secondary'
+					'error'
+					'primary'
+				]
 
 		mixins: [
 			alertToggle
@@ -217,7 +241,8 @@
 			# Filter Event
 
 			filterEvent: () ->
-				this.filters = []
+				if this.activeFilters.length == 0
+					this.filters = []
 				this.resetForm()
 
 			# Add Filter
@@ -225,9 +250,12 @@
 			addFilter: () ->
 				if this.formValid
 					curFilter =
+						color: this.colors[this.currentColor % 7]
 						field: this.currentField.value
 						operator: this.currentOperator.value
-						text: "#{this.currentField.value} #{this.currentOperator.value} #{this.currentValue}"
+						value: this.currentValue
+						text: "#{this.currentField.value} | #{this.currentOperator.value} | #{this.currentValue}"
+					this.currentColor = (this.currentColor + 1) % 7
 					this.filters.push(curFilter)
 					this.resetForm()
 					this.showAlert(

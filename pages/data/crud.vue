@@ -4,9 +4,22 @@
 			:message="message"
 			type="success"
 			v-bind:show.sync="showMessage"
+			class="mb-2"
+		/>
+		<v-tag
+			v-for="(item, i) in filters"
+			:key="i"
+			:text="item.text"
+			:color="item.color"
+			:close="false"
+			class="my-2"
 		/>
 		<v-data-table
-			class="mt-4"
+			v-bind:class=
+				"{
+					'mt-4': filters.length == 0,
+					'mt-0': filters.length > 0,
+				}"
 			:headers="headers"
 			:items="itemsDisplay"
 			:items-per-page="itemsPerPage"
@@ -21,12 +34,23 @@
 						/>
 						<div class="flex-grow-1"></div>
 						<crud-filter-dialog
+							ref="filterDialog"
 							:fields="headers"
 							:schema="schema"
+							:activeFilters="filters"
+							@filterApply="filterApply($event)"
 						/>
+						<v-btn
+							v-show="filters.length > 0"
+							color="warning"
+							class="mr-2"
+							@click.stop="resetEvent()"
+						>
+							Reset
+						</v-btn>
 						<crud-update-dialog
 							ref="updateDialog"
-							buttonText="Create Item"
+							buttonText="Create"
 							:dialogTitle="updateDialogTitle"
 							:collection="collection"
 							:primaryKey="primaryKey"
@@ -140,12 +164,13 @@
 				collection: models[model].collectionName
 				title: titleCase(model)
 				primaryKey: models[model].primaryKey
-				updateDialogTitle: 'Create a Record'
-				infoDialogTitle: 'Record #1'
+				updateDialogTitle: 'Create an Item'
+				infoDialogTitle: 'Item #1'
 				headers: headers
 				items: []
 				itemsUpdate: []
 				itemsDisplay: []
+				filters: []
 				currentRecord: {}
 				currentIndex: 1
 				itemsPerPage: 10
@@ -168,8 +193,9 @@
 
 			# Load Items
 
-			loadItems: () ->
-				data = await this.$api.getAll(this.collection)
+			loadItems: (data) ->
+				if !data?
+					data = await this.$api.getAll(this.collection)
 				if data.status == 'ok'
 					this.items = cloneDeep(data.response)
 					this.itemsUpdate = cloneDeep(data.response)
@@ -214,7 +240,7 @@
 			viewItem: (item) ->
 				this.currentIndex = this.itemsDisplay.indexOf(item)
 				this.currentRecord = this.items[this.currentIndex]
-				this.$refs.infoDialog.dialogTitleText = "Record ##{this.currentIndex + 1}"
+				this.$refs.infoDialog.dialogTitleText = "Item ##{this.currentIndex + 1}"
 				this.$refs.infoDialog.showDelete = false
 				this.$refs.infoDialog.showDialog = true
 
@@ -222,7 +248,7 @@
 
 			editItem: (item) ->
 				this.getItemModels(item)
-				this.$refs.updateDialog.dialogTitleText = "Update Record ##{this.currentIndex + 1}"
+				this.$refs.updateDialog.dialogTitleText = "Update Item ##{this.currentIndex + 1}"
 				this.$refs.updateDialog.mode = 'update'
 				this.$refs.updateDialog.primaryValue = this.items[this.currentIndex][this.primaryKey]
 				this.$refs.updateDialog.showDialog = true
@@ -231,7 +257,7 @@
 
 			copyItem: (item) ->
 				this.getItemModels(item)
-				this.$refs.updateDialog.dialogTitleText = "Copy Record ##{this.currentIndex + 1}"
+				this.$refs.updateDialog.dialogTitleText = "Copy Item ##{this.currentIndex + 1}"
 				this.$refs.updateDialog.mode = 'create'
 				this.$refs.updateDialog.showDialog = true
 
@@ -240,7 +266,7 @@
 			deleteItem: (item) ->
 				this.currentIndex = this.itemsDisplay.indexOf(item)
 				this.currentRecord = this.items[this.currentIndex]
-				this.$refs.infoDialog.dialogTitleText = "Delete Record ##{this.currentIndex + 1}"
+				this.$refs.infoDialog.dialogTitleText = "Delete Item ##{this.currentIndex + 1}"
 				this.$refs.infoDialog.showDelete = true
 				this.$refs.infoDialog.showDialog = true
 
@@ -259,21 +285,49 @@
 
 			createSave: () ->
 				this.actionSuccess(
-					'Record created successfully'
+					'Item created successfully'
 				)
 
 			# Update Save
 
 			updateSave: () ->
 				this.actionSuccess(
-					"Record ##{this.currentIndex} updated successfully"
+					"Item ##{this.currentIndex} updated successfully"
 				)
 
 			# Delete Save
 
 			deleteSave: () ->
 				this.actionSuccess(
-					"Record ##{this.currentIndex} deleted successfully"
+					"Item ##{this.currentIndex} deleted successfully"
+				)
+
+			# Filter Apply
+
+			filterApply: (filters) ->
+				whereArgs = []
+				for filter in filters
+					whereArgs.push(
+						field: filter.field
+						op: filter.operator
+						value: filter.value
+					)
+				data = await this.$api.find(
+					this.collection,
+					where: whereArgs
+				)
+				this.filters = filters
+				this.$refs.filterDialog.filters = cloneDeep(filters)
+				this.loadItems(data)
+				this.message = "Items filtered successfully"
+				this.messageOn()
+
+			# Reset Event
+
+			resetEvent: ->
+				this.filters = []
+				this.actionSuccess(
+					"Filters cleared successfully"
 				)
 
 			# Action Success

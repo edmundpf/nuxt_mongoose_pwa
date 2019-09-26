@@ -10,20 +10,27 @@
 			</v-card-title>
 			<v-card-text>
 				<v-container>
-					<alert
-						:message="message"
-						type="error"
-						v-bind:show.sync="showMessage"
-					/>
+
+					<v-row>
+						<v-col class="pa-0">
+							<alert
+								:message="message"
+								type="error"
+								v-bind:show.sync="showMessage"
+							/>
+						</v-col>
+					</v-row>
+
 					<rowCol :textCenter="false">
 						<strong
 							class="white--text"
 							v-show="showDelete"
 						>
-							Are you sure you want to delete the following record?
+							Are you sure you want to delete the following item?
 						</strong>
 						<pre class="pre-wrap">{{ recordText }}</pre>
 					</rowCol>
+
 				</v-container>
 			</v-card-text>
 			<v-card-actions>
@@ -73,7 +80,7 @@
 				default: ''
 
 		data: ->
-			defaultTitle = 'Record #1'
+			defaultTitle = 'Item #1'
 			return
 				showDialog: false
 				showDelete: true
