@@ -65,7 +65,7 @@ $ npm run api
 ### Sign Up
 * Create a user using your secret key
 
-![PWA - Sign Up](https://i.imgur.com/5qt4Qnd.gif "PWA - Sign Up")
+![PWA - Sign Up](https://i.imgur.com/yM9lgjM.gif "PWA - Sign Up")
 
 ### View/Edit your collections
 * Click the *Data Models* option in the menu. Your collections will be automatically populated.
