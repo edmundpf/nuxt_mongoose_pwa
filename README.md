@@ -139,6 +139,5 @@ $ npm run api
 ![PWA - Sign Out and Auth](https://i.imgur.com/5qt4Qnd.gif "PWA - Sign Out and Auth")
 
 ## Issues/Contributing
-* Please add any issues, feedback, or suggestions in the issue track
-	* [Issue Tracker](https://github.com/edmundpf/nuxt_mongoose_pwa/issues)
+* Please add any issues, feedback, or suggestions to the [Issue Tracker](https://github.com/edmundpf/nuxt_mongoose_pwa/issues)
 * Submit a pull request to contribute, any contributions are welcome
