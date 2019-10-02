@@ -1,6 +1,7 @@
 const fs = require('fs')
 const api = require('mongoose-auto-api.rest')
 const cloneDeep = require('lodash.clonedeep')
+api.start()
 
 // Write Models Info JSON file
 
