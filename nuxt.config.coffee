@@ -1,5 +1,20 @@
+import fs from 'fs'
+import path from 'path'
 import appConfig from './appConfig.json'
 import colors from 'vuetify/es5/util/colors'
+
+#: Server Config
+
+serverConfig =
+	host: if appConfig.serverAddress != 'localhost' then '0.0.0.0' else 'localhost'
+	port: appConfig.webPort
+
+if appConfig.serverAddress != 'localhost'
+	serverConfig.https =
+		key: fs.readFileSync(path.resolve(__dirname, './keys/ss.key'))
+		cert: fs.readFileSync(path.resolve(__dirname, './keys/ss.crt'))
+
+#: Exports
 
 module.exports =
 
@@ -25,8 +40,7 @@ module.exports =
 
 	# Web Server
 
-	server:
-		port: appConfig.webPort
+	server: serverConfig
 
 	# Server Middleware
 

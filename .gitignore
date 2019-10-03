@@ -95,3 +95,6 @@ appConfig.json
 
 # Models JSON
 assets/json/models.json
+
+# Keys
+keys/
