@@ -31,7 +31,7 @@
     "@nuxtjs/vuetify": "^1.0.0",
     "coffee-loader": "^0.9.0",
     "coffeescript": "^2.4.1",
-    "mongoose-auto-api.cli": "^0.1.0"
+    "mongoose-auto-api.cli": "^0.1.1"
   },
   "homepage": "https://github.com/edmundpf/nuxt_mongoose_pwa",
   "repository": {
