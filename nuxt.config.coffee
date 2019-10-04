@@ -10,9 +10,15 @@ serverConfig =
 	port: appConfig.webPort
 
 if appConfig.serverAddress != 'localhost'
+
+	keyPath = if appConfig.sslKey then appConfig.sslKey else "/etc/letsencrypt/live/#{serverConfig.serverAddress}/privkey.pem"
+	certPath = if appConfig.sslCert then appConfig.sslCert else "/etc/letsencrypt/live/#{serverConfig.serverAddress}/cert.pem"
+	chainPath = if appConfig.sslChain then appConfig.sslChain else "/etc/letsencrypt/live/#{serverConfig.serverAddress}/chain.pem"
+
 	serverConfig.https =
-		key: fs.readFileSync(path.resolve(__dirname, './keys/ss.key'))
-		cert: fs.readFileSync(path.resolve(__dirname, './keys/ss.crt'))
+		key: fs.readFileSync(path.resolve(keyPath))
+		cert: fs.readFileSync(path.resolve(certPath))
+		ca: fs.readFileSync(path.resolve(chainPath))
 
 #: Exports
 
@@ -110,7 +116,7 @@ module.exports =
 
 	build:
 
-		analyze: process.env.NODE_ENV == 'production'
+		# analyze: process.env.NODE_ENV == 'production'
 
 		# Webpack Extension
 
