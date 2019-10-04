@@ -11,9 +11,9 @@ serverConfig =
 
 if appConfig.serverAddress != 'localhost'
 
-	keyPath = if appConfig.sslKey then appConfig.sslKey else "/etc/letsencrypt/live/#{serverConfig.serverAddress}/privkey.pem"
-	certPath = if appConfig.sslCert then appConfig.sslCert else "/etc/letsencrypt/live/#{serverConfig.serverAddress}/cert.pem"
-	chainPath = if appConfig.sslChain then appConfig.sslChain else "/etc/letsencrypt/live/#{serverConfig.serverAddress}/chain.pem"
+	keyPath = if appConfig.sslKey then appConfig.sslKey else "/etc/letsencrypt/live/#{appConfig.serverAddress}/privkey.pem"
+	certPath = if appConfig.sslCert then appConfig.sslCert else "/etc/letsencrypt/live/#{appConfig.serverAddress}/cert.pem"
+	chainPath = if appConfig.sslChain then appConfig.sslChain else "/etc/letsencrypt/live/#{appConfig.serverAddress}/chain.pem"
 
 	serverConfig.https =
 		key: fs.readFileSync(path.resolve(keyPath))
