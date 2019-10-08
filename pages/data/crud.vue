@@ -147,7 +147,7 @@
 						header.rules.push(this.requiredValidation(header.text))
 					else
 						header.required = false
-					if models[model].encryptFields.includes(key)
+					if models[model].encryptFields.includes(key) or models[model].encodeFields.includes(key)
 						header.show = false
 					if models[model].listFields.includes(key)
 						header.list = true

@@ -9,5 +9,10 @@ module.exports = {
 			type: Number,
 			required: true,
 		},
+		code: {
+			type: String,
+			required: true,
+			encode: true,
+		}
 	},
 }
