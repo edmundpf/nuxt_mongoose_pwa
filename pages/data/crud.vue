@@ -217,9 +217,8 @@
 							# Date Fields
 
 							if [...models[this.model].dateFields, 'createdAt', 'updatedAt'].includes(key)
-								dateTime = getDateAndTime(val)
 								milDateTime = getDateAndTime(val, true)
-								record[key] = "#{dateTime.date} #{dateTime.time}"
+								record[key] = "#{milDateTime.date} #{milDateTime.time}"
 								this.itemsUpdate[data.response.indexOf(record)][key] = "#{milDateTime.date} #{milDateTime.time}"
 
 							# Ellipsis

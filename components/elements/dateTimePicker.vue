@@ -85,12 +85,10 @@
 	#: NPM - vuetify-datetime-picker
 
 	import { format, parse } from 'date-fns'
-	import getDateAndTime from '~/modules/miscUtils'
-
 
 	DEFAULT_DATE = ''
 	DEFAULT_TIME = '00:00:00'
-	DATE_FORMAT = 'MM-dd-yyyy'
+	DATE_FORMAT = 'yyyy-MM-dd'
 	TIME_FORMAT = 'HH:mm:ss'
 	DEFAULT_DATE_FORMAT = 'yyyy-MM-dd'
 	DEFAULT_TIME_FORMAT = 'HH:mm:ss'

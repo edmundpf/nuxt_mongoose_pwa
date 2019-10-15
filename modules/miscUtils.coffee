@@ -30,7 +30,7 @@ export getDateAndTime = (value, military=false) ->
 	else
 		time = "#{h}:#{m}:#{s}"
 	return
-		date: "#{mm}-#{dd}-#{yyyy}"
+		date: "#{yyyy}-#{mm}-#{dd}"
 		time: time
 
 #::: End Program :::
