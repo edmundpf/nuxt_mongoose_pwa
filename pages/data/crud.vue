@@ -21,8 +21,10 @@
 					'mt-0': filters.length > 0,
 				}"
 			:headers="headers"
+			:loading="loading"
 			:items="itemsDisplay"
 			:items-per-page="itemsPerPage"
+			loading-text="Loading..."
 		>
 			<template v-slot:top>
 				<v-toolbar flat>
@@ -174,6 +176,7 @@
 				currentRecord: {}
 				currentIndex: 1
 				itemsPerPage: 10
+				loading: true
 
 		mixins: [
 			validation
@@ -194,6 +197,7 @@
 			# Load Items
 
 			loadItems: (data) ->
+				this.loading = true
 				if !data?
 					data = await this.$api.getAll(this.collection)
 				if data.status == 'ok'
@@ -227,6 +231,7 @@
 								record[key] = "#{val.substring(0, 28)}..."
 
 					this.itemsDisplay = data.response
+					this.loading = false
 
 			# Create Item
 

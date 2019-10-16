@@ -3,7 +3,8 @@
 		<v-col
 			:class="textCenter ? 'text-center' : null"
 			:sm="condense ? 8 : null"
-			:md="condense ? 6 : null"
+			:lg="condense ? 6 : null"
+			:xl="condense ? 4 : null"
 		>
 			<slot />
 		</v-col>
