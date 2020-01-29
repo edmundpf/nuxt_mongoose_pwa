@@ -1,6 +1,6 @@
 {
   "name": "nuxt-mongoose-pwa",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Nuxt starter PWA integrated with mongoose-auto-api ☕",
   "author": "Edmund Pfeil <edmundpf@buffalo.edu>",
   "private": false,
@@ -20,7 +20,7 @@
     "lodash.clonedeep": "^4.5.0",
     "lodash.startcase": "^4.4.0",
     "mongoose-auto-api.consumer": "^1.0.0",
-    "mongoose-auto-api.rest": "^1.0.1",
+    "mongoose-auto-api.rest": "^1.0.2",
     "mongoose-auto-api.validation": "^1.0.0",
     "node-sass": "^4.13.0",
     "nuxt": "^2.11.0",
