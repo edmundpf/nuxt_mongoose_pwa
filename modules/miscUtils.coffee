@@ -1,5 +1,6 @@
 startCase = require('lodash.startcase')
 camelCase = require('lodash.camelcase')
+import { format } from 'date-fns'
 
 #: Title Case
 
@@ -32,5 +33,22 @@ export getDateAndTime = (value, military=false) ->
 	return
 		date: "#{yyyy}-#{mm}-#{dd}"
 		time: time
+
+#: Round Number
+
+export roundNumber = (number, places=2) ->
+	return number.toFixed(places)
+
+#: Get Percent
+
+export getPercent = (val, places=2) ->
+	return "#{roundNumber(Number(val) * 100, places)}%"
+
+#: Current Local Date
+
+export currentLocalDate = (curDate) ->
+	if !curDate?
+		curDate = new Date()
+	return new Date("#{format(curDate, 'yyyy-MM-dd')}T00:00:00").toISOString()
 
 #::: End Program :::

@@ -43,4 +43,11 @@ fs.writeFileSync(
 
 console.log(`Models Info data stored in ${filename}`)
 
+// Exports
+
+module.exports = {
+	path: '/',
+	handler: api.app,
+}
+
 //::: End Program ::://

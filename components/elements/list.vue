@@ -34,7 +34,7 @@
 				default: true
 			transparent:
 				type: Boolean
-				default: true
+				default: false
 			action:
 				type: Function
 				default: null

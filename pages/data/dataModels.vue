@@ -5,7 +5,6 @@
 	>
 		<list
 			:items="dataModels"
-			:transparent="true"
 		/>
 	</rowCol>
 </template>
