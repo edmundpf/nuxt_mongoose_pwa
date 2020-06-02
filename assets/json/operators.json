@@ -1,0 +1,67 @@
+[
+  {
+    "text": "=",
+    "value": "$eq",
+    "hint": "Equals"
+  },
+  {
+    "text": "!=",
+    "value": "$ne",
+    "hint": "Not equal to"
+  },
+  {
+    "text": ">",
+    "value": "$gt",
+    "hint": "Greater than"
+  },
+  {
+    "text": "≥",
+    "value": "$gte",
+    "hint": "Greater than or equal to"
+  },
+  {
+    "text": "<",
+    "value": "$lt",
+    "hint": "Less than"
+  },
+  {
+    "text": "≤",
+    "value": "$lte",
+    "hint": "Less than or equal to"
+  },
+  {
+    "text": "In",
+    "value": "$in",
+    "hint": "Is in"
+  },
+  {
+    "text": "Starts With",
+    "value": "$strt",
+    "hint": "Starts with"
+  },
+  {
+    "text": "Ends With",
+    "value": "$end",
+    "hint": "Ends with"
+  },
+  {
+    "text": "Contains",
+    "value": "$cont",
+    "hint": "Contains"
+  },
+  {
+    "text": "Not In",
+    "value": "$nin",
+    "hint": "Is not in"
+  },
+  {
+    "text": "Includes",
+    "value": "$inc",
+    "hint": "Includes"
+  },
+  {
+    "text": "Not Included",
+    "value": "$ninc",
+    "hint": "Does not include"
+  }
+]
