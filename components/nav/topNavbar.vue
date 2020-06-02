@@ -125,7 +125,7 @@
 
 			nonHiddenDrawerItems: ->
 				nonHiddenItems = []
-				for item in drawerItems
+				for item in this.drawerItems
 					if this.showDrawerItem(item)
 						nonHiddenItems.push(item)
 				return nonHiddenItems
