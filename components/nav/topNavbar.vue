@@ -9,8 +9,7 @@
 		>
 			<v-list>
 				<v-list-item
-					v-for="(item, i) in drawerItems"
-					v-if="showDrawerItem(item)"
+					v-for="(item, i) in nonHiddenDrawerItems"
 					:key="i"
 					:to="item.to"
 					exact
@@ -121,6 +120,15 @@
 			'$route.name': (value) ->
 				this.siteTitle = this.getSiteTitle(value)
 				this.showBackButton = this.hasBackButton(value)
+
+		computed:
+
+			nonHiddenDrawerItems: ->
+				nonHiddenItems = []
+				for item in drawerItems
+					if this.showDrawerItem(item)
+						nonHiddenItems.push(item)
+				return nonHiddenItems
 
 		methods:
 

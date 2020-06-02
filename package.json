@@ -1,6 +1,6 @@
 {
   "name": "nuxt-mongoose-pwa",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Nuxt starter PWA integrated with mongoose-auto-api ☕",
   "author": "Edmund Pfeil <edmundpf@buffalo.edu>",
   "private": true,
