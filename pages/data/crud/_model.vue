@@ -360,21 +360,24 @@
 
 			createSave: () ->
 				this.actionSuccess(
-					'Item created successfully'
+					'Item created successfully',
+					true
 				)
 
 			# Update Save
 
 			updateSave: () ->
 				this.actionSuccess(
-					"Item ##{this.currentIndex} updated successfully"
+					"Item ##{this.currentIndex} updated successfully",
+					true
 				)
 
 			# Delete Save
 
 			deleteSave: () ->
 				this.actionSuccess(
-					"Item ##{this.currentIndex} deleted successfully"
+					"Item ##{this.currentIndex} deleted successfully",
+					true
 				)
 
 			# Load Filters
@@ -435,13 +438,14 @@
 				delete newQuery.where
 				this.$router.replace(query: newQuery)
 				this.actionSuccess(
-					"Filters cleared successfully"
+					"Filters cleared successfully",
+					false
 				)
 
 			# Action Success
 
-			actionSuccess: (message) ->
-				this.loadItems({ urlQuery: false })
+			actionSuccess: (message, urlQuery) ->
+				this.loadItems({ urlQuery: urlQuery })
 				this.message = message
 				this.messageOn()
 
