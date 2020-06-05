@@ -231,13 +231,19 @@
 		}
 
 		created: ->
-			await this.loadItems({ urlQuery: true })
+			await this.loadItems()
 
 		methods:
 
 			# Load Items
 
 			loadItems: (args={}) ->
+				args = {
+					data: null,
+					urlQuery: true,
+					loadFilters: true,
+					...args
+				}
 				this.loading = true
 				if !args.data?
 					if !this.$route.query.where? or !args.urlQuery
@@ -248,7 +254,8 @@
 							this.collection,
 							where: whereArgs
 						)
-						this.loadFilters(whereArgs)
+						if args.loadFilters
+							this.loadFilters(whereArgs)
 				else
 					data = args.data
 
@@ -361,7 +368,10 @@
 			createSave: () ->
 				this.actionSuccess(
 					'Item created successfully',
-					true
+					{
+						urlQuery: true,
+						loadFilters: false,
+					}
 				)
 
 			# Update Save
@@ -369,7 +379,10 @@
 			updateSave: () ->
 				this.actionSuccess(
 					"Item ##{this.currentIndex} updated successfully",
-					true
+					{
+						urlQuery: true,
+						loadFilters: false,
+					}
 				)
 
 			# Delete Save
@@ -377,7 +390,10 @@
 			deleteSave: () ->
 				this.actionSuccess(
 					"Item ##{this.currentIndex} deleted successfully",
-					true
+					{
+						urlQuery: true,
+						loadFilters: false,
+					}
 				)
 
 			# Load Filters
@@ -439,13 +455,13 @@
 				this.$router.replace(query: newQuery)
 				this.actionSuccess(
 					"Filters cleared successfully",
-					false
+					{ urlQuery: false }
 				)
 
 			# Action Success
 
-			actionSuccess: (message, urlQuery) ->
-				this.loadItems({ urlQuery: urlQuery })
+			actionSuccess: (message, loadArgs={}) ->
+				this.loadItems(loadArgs)
 				this.message = message
 				this.messageOn()
 
