@@ -55,3 +55,9 @@
 				this.$emit("update:loading", value)
 
 </script>
+
+<style lang="scss">
+	.v-skeleton-loader__list-item {
+		height: unset;
+	}
+</style>
