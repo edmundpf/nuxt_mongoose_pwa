@@ -96,5 +96,5 @@ appConfig.json
 # Models JSON
 assets/json/models.json
 
-# Keys
-keys/
+# Test Page
+pages/test.vue

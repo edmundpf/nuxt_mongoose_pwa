@@ -15,9 +15,15 @@
 				<v-card>
 					<v-card-title><h4>{{ col.title }}</h4></v-card-title>
 					<v-divider></v-divider>
-					<v-card-text v-bind:class="{ [col.color]: col.color != null }">
-						<h3 class="white--text">{{ col.subtitle }}</h3>
-					</v-card-text>
+					<v-skeleton-loader
+						:loading="isLoading"
+						:type="skeletonType"
+						class="mx-auto"
+					>
+						<v-card-text v-bind:class="{ [col.color]: col.color != null }">
+							<h3 class="white--text">{{ col.subtitle }}</h3>
+						</v-card-text>
+					</v-skeleton-loader>
 				</v-card>
 			</v-col>
 		</v-row>
@@ -32,5 +38,20 @@
 			items:
 				type: Array
 				default: []
+			loading:
+				type: Boolean
+				default: false
+			skeletonType:
+				type: String
+				default: "list-item"
+
+		data: ->
+			return
+				isLoading: this.loading
+
+		watch:
+			loading: (value) ->
+				this.isLoading = value
+				this.$emit("update:loading", value)
 
 </script>
