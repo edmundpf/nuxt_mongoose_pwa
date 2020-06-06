@@ -15,15 +15,15 @@
 				<v-card>
 					<v-card-title><h4>{{ col.title }}</h4></v-card-title>
 					<v-divider></v-divider>
-					<v-skeleton-loader
-						:loading="isLoading"
-						:type="skeletonType"
-						class="mx-auto"
-					>
-						<v-card-text v-bind:class="{ [col.color]: col.color != null }">
+					<v-card-text v-bind:class="{ [col.color]: col.color != null }">
+						<v-skeleton-loader
+							:loading="isLoading"
+							:type="skeletonType"
+							class="mx-auto"
+						>
 							<h3 class="white--text">{{ col.subtitle }}</h3>
-						</v-card-text>
-					</v-skeleton-loader>
+						</v-skeleton-loader>
+					</v-card-text>
 				</v-card>
 			</v-col>
 		</v-row>
