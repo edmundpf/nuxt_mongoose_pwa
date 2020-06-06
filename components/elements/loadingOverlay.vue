@@ -1,5 +1,5 @@
 <template>
-	<v-overlay :value="loading">
+	<v-overlay :value="isLoading">
 		<v-progress-circular
 			indeterminate
 			color="secondary"
@@ -14,6 +14,15 @@
 
 		props:
 			loading: Boolean
-			default: true
+				default: true
+
+		data: ->
+			return
+				isLoading: this.loading
+
+		watch:
+			loading: (value) ->
+				this.isLoading = value
+				this.$emit("update:loading", value)
 
 </script>
