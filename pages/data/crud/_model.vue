@@ -126,6 +126,7 @@
 		data: ->
 			viewOnly = false
 			headers = []
+			omitIndexes = []
 			extraFields = [
 				{
 					text: 'Created'
@@ -153,13 +154,17 @@
 				viewOnly = true
 				excludeFields = JSON.parse(this.$route.query.excludeFields)
 
-			for index, key of headerKeys
-				if includeFields? and !includeFields.includes(key)
-					headerKeys.splice(index, 1)
-					continue
-				else if excludeFields? and excludeFields.includes(key)
-					headerKeys.splice(index, 1)
-					continue
+			headerKeys = headerKeys.filter(
+				(key) =>
+					if includeFields? and !includeFields.includes(key)
+						return false
+					else if excludeFields? and excludeFields.includes(key)
+						return false
+					else
+						return true
+			)
+
+			for key in headerKeys
 				if !appConfig.hiddenFields.includes(key)
 					header =
 						text: titleCase(key)
