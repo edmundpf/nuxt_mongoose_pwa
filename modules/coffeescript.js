@@ -12,7 +12,7 @@ export default function() {
 		// Get babel config from nuxt
 
 		const babel = config.module.rules.find(rule => {
-			return String(rule.test) == '/\\.jsx?$/i'
+			return String(rule.test) == '/\\.m?jsx?$/i'
 		})
 
 		// Add Coffeescript Loader w/ Babel transpile

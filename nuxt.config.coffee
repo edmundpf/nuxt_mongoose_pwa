@@ -7,7 +7,7 @@ import colors from 'vuetify/es5/util/colors'
 
 serverConfig =
 	host: if appConfig.serverAddress != 'localhost' then '0.0.0.0' else 'localhost'
-	port: appConfig.webPort
+	port: if process.env.NODE_ENV == 'production' then process.env.WEB_PORT || appConfig.webPort else appConfig.webPort + 10
 
 if appConfig.serverAddress != 'localhost'
 
@@ -47,6 +47,12 @@ module.exports =
 	# Web Server
 
 	server: serverConfig
+
+	# Watch (update when adding new models)
+
+	watch: [
+		'~/models/*'
+	]
 
 	# Server Middleware
 

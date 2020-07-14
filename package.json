@@ -1,6 +1,6 @@
 {
   "name": "nuxt-mongoose-pwa",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Nuxt starter PWA integrated with mongoose-auto-api ☕",
   "author": "Edmund Pfeil <edmundpf@buffalo.edu>",
   "private": true,
@@ -13,27 +13,27 @@
     "setup": "node ./modules/setupCli"
   },
   "dependencies": {
-    "@nuxtjs/pwa": "^3.0.0-beta.19",
-    "date-fns": "^2.8.1",
+    "@nuxtjs/pwa": "^3.0.0-beta.20",
+    "date-fns": "^2.14.0",
     "js-cookie": "^2.2.1",
     "lodash.camelcase": "^4.3.0",
     "lodash.clonedeep": "^4.5.0",
     "lodash.startcase": "^4.4.0",
-    "mongoose": "^5.8.4",
-    "mongoose-auto-api.consumer": "^1.0.0",
+    "mongoose": "^5.9.24",
+    "mongoose-auto-api.consumer": "^1.0.2",
     "mongoose-auto-api.info": "^1.0.5",
-    "mongoose-auto-api.rest": "^1.0.3",
+    "mongoose-auto-api.rest": "^1.0.5",
     "mongoose-auto-api.validation": "^1.0.1",
     "node-sass": "^4.13.1",
-    "nuxt": "^2.11.0",
+    "nuxt": "^2.13.3",
     "print-tools-js": "^1.2.0",
-    "sass-loader": "^8.0.0",
-    "vuex-persistedstate": "^2.7.0"
+    "sass-loader": "^8.0.2",
+    "vuex-persistedstate": "^2.7.1"
   },
   "devDependencies": {
-    "@nuxtjs/vuetify": "^1.9.1",
+    "@nuxtjs/vuetify": "^1.11.2",
     "coffee-loader": "^0.9.0",
-    "coffeescript": "^2.5.0",
+    "coffeescript": "^2.5.1",
     "mongoose-auto-api.cli": "^1.0.0"
   },
   "homepage": "https://github.com/edmundpf/nuxt_mongoose_pwa",

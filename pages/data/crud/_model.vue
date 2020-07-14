@@ -24,6 +24,8 @@
 			:loading="loading"
 			:items="itemsDisplay"
 			:items-per-page="itemsPerPage"
+			:sort-by="defaultSort"
+			:sort-desc="defaultSort != null ? sortDesc : false"
 			loading-text="Loading..."
 		>
 			<template v-slot:top>
@@ -124,6 +126,8 @@
 	export default
 
 		data: ->
+			defaultSort = null
+			sortAsc = true
 			viewOnly = false
 			headers = []
 			omitIndexes = []
@@ -163,6 +167,10 @@
 					else
 						return true
 			)
+
+			if this.$route.query.sortBy? and headerKeys.includes(this.$route.query.sortBy)
+				defaultSort = this.$route.query.sortBy
+				sortAsc = if this.$route.query.sortAsc? then [true, 'true'].includes(this.$route.query.sortAsc) else false
 
 			for key in headerKeys
 				if !appConfig.hiddenFields.includes(key)
@@ -214,6 +222,8 @@
 				currentColor: 0
 				loading: true
 				viewOnly: viewOnly
+				defaultSort: defaultSort
+				sortDesc: !sortAsc
 				colors: [
 					'info'
 					'success'

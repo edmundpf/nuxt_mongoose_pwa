@@ -16,7 +16,7 @@ export getDateAndTime = (value, military=false) ->
 	s = date.getSeconds()
 	session = 'AM'
 	dd = String(date.getDate()).padStart(2, '0')
-	mm = String(date.getMonth() + 1)
+	mm = String(date.getMonth() + 1).padStart(2, '0')
 	yyyy = date.getFullYear()
 	if !military
 		if h == 0
