@@ -24,7 +24,7 @@
     "mongoose-auto-api.info": "^1.0.5",
     "mongoose-auto-api.rest": "^1.0.5",
     "mongoose-auto-api.validation": "^1.0.1",
-    "node-sass": "^4.13.1",
+    "node-sass": "^7.0.0",
     "nuxt": "^2.13.3",
     "print-tools-js": "^1.2.0",
     "sass-loader": "^8.0.2",
